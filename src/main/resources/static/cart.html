@@ -22,8 +22,7 @@
 		</div>
 		<div class="span9">
 			<div class="headerAd">
-				<img src="image/header.jpg" width="320" height="50" alt="正品保障"
-					title="正品保障" />
+				<img src="image/header.jpg" width="320" height="50" alt="正品保障" title="正品保障" />
 			</div>
 		</div>
 		<div id="topNav" class="span10 last">
@@ -174,8 +173,8 @@
 				methods:{
 					deleteCart(pid){
 						if(confirm("确定删除该商品?")){
-							axios.get("cart.s?op=deleteCart&pid="+pid).then(res=>{
-								alert(res.data.msg);
+							 axios.get("cart.s?op=deleteCart&pid="+pid).then(res=>{
+								alert(res.data.msg); 
 							})
 						}
 					},

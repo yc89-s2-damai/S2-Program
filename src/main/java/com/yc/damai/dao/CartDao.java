@@ -36,11 +36,8 @@ public class CartDao extends BaseDao {
 		}
 	}
 
-	public void deleteCart(String pid) {
-		String sql = "delete from cart where pid=?";
-
-		jt.update(sql, pid);
-
+	public void deleteCart(int pid,int uid) {
+		jt.update("delete from cart where pid=? and uid=?", pid,uid);
 	}
 
 	public void clearCart(Integer iUid) throws SQLException {
@@ -58,6 +55,7 @@ public class CartDao extends BaseDao {
 				+ " left join product c on a.pid=c.pid"
 				+ " where a.uid=?", uid);
 	}
+	
 
 	private RowMapper<Cart> cartRowMapper = new RowMapper<Cart>() {
 

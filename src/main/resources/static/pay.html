@@ -6,6 +6,8 @@
 <title>大麦商城</title>
 <link href="css/common.css" rel="stylesheet" type="text/css"/>
 <link href="css/cart.css" rel="stylesheet" type="text/css"/>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
 </head>
 <body>
 
@@ -22,41 +24,22 @@
 <div class="headerAd">
 	<img src="image/header.jpg" width="320" height="50" alt="正品保障" title="正品保障"/>
 </div>	</div>
-<div class="span10 last">
+<div id="top" class="span10 last">
 		<div class="topNav clearfix">
-			<ul>
-				
-					<li id="headerLogin" class="headerLogin" style="display: list-item;">
-						Song|
-					</li>
-					<li id="headerLogin" class="headerLogin" style="display: list-item;">
-						<a href="olist.html">我的订单</a>|
-					</li>
-					<li id="headerRegister" class="headerRegister" style="display: list-item;">
-					<a href="index.html">退出</a>|
-				</li>
-				
-				
-				
-				
-				<li id="headerUsername" class="headerUsername"></li>
-				<li id="headerLogout" class="headerLogout">
-					<a>[退出]</a>|
-				</li>
-						<li>
-							<a>会员中心</a>
-							|
-						</li>
-						<li>
-							<a>购物指南</a>
-							|
-						</li>
-						<li>
-							<a>关于我们</a>
-							
-						</li>
-			</ul>
-		</div>
+				<ul>
+
+					<li id="headerLogin" class="headerLogin"
+						style="display: list-item;"><a href="login.html"
+						v-if="user==''">登录</a> <a v-if="user!=null">{{user.name}}</a>|</li>
+					<li id="headerLogin" class="headerLogin"
+						style="display: list-item;"><a href="olist.html">我的订单</a>|</li>
+					<li id="headerRegister" class="headerRegister"
+						style="display: list-item;"><a @click="logout()">退出</a>|</li>
+					<li><a>会员中心</a> |</li>
+					<li><a>购物指南</a> |</li>
+					<li><a>关于我们</a></li>
+				</ul>
+			</div>
 		<div class="cart">
 			<a  href="cart.html">购物车</a>
 		</div>
@@ -65,62 +48,54 @@
 				<strong>96008/53277764</strong>
 			</div>
 	</div>
+		<script type="text/javascript">
+			var v2 = new Vue({
+				el:"#top",
+				data:{
+					user:{}
+				},
+				created(){
+					axios.get("getLoginedUser").then(res=>{
+						this.user = res.data;
+					})
+				},
+				methods:{
+					logout(){
+						if(confirm("确定要退出登录?")){
+							axios.get("out.s").then(res=>{
+								alert(res.data.msg);
+								location.href = "index.html";
+							});
+						}
+					}
+				}
+			})
+		</script>	
 	<!-- 菜单栏 -->
-	
 
-
-<div class="span24">
+<div class="span24" id="toplist">
 		<ul class="mainNav">
-					<li>
-						<a href="index.html">首页</a>
-						|
-					</li>
-					
-					<li>
-<a href="clist.html?cid=1&pageIndex=1">
-					女装男装
-</a>
-					|</li>
-					
-					<li>
-<a href="clist.html?cid=2&pageIndex=1">
-					鞋靴箱包
-</a>
-					|</li>
-					
-					<li>
-<a href="clist.html?cid=3&pageIndex=1">
-					运动户外
-</a>
-					|</li>
-					
-					<li>
-<a href="clist.html?cid=4&pageIndex=1">
-					珠宝配饰
-</a>
-					|</li>
-					
-					<li>
-<a href="clist.html?cid=5&pageIndex=1">
-					手机数码
-</a>
-					|</li>
-					
-					<li>
-<a href="clist.html?cid=6&pageIndex=1">
-					家电办公
-</a>
-					|</li>
-					
-					<li>
-<a href="clist.html?cid=7&pageIndex=1">
-					护肤彩妆
-</a>
-					|</li>
-							
-		</ul>
-	</div>
+				<li><a href="index.html">首页</a> |</li>
 
+				<li v-for="c in category"><a :href="'clist.html#c'+c.cid">
+						{{c.cname}} </a> |</li>
+
+			</ul>
+	</div>
+<script type="text/javascript">
+			var v = new Vue({
+				el : "#toplist",
+				data :{
+					category:[]
+				},
+				created(){
+					axios.get("category.s?op=queryCategory").then(res=>{
+						this.category = res.data;
+					})
+				}
+			})
+			
+		</script>
 	
 </div>	
 

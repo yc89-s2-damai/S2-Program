@@ -17,12 +17,7 @@ import com.yc.damai.po.User;
 public class CartAction {
 
 	@Resource
-	private CartDao cdao;
-	
-	@RequestMapping(path="cart.s" ,params = "op=deleteCart")
-	public void deleteCart() {
-		
-	}
+	private CartDao cdao;	
 	/**
 	 * 添加购物车
 	 * @param pid 商品id
@@ -49,5 +44,16 @@ public class CartAction {
 	public List<?> queryCart(HttpSession session){
 		User user = (User) session.getAttribute("loginedUser");
 		return cdao.selectCart(user.getUid());
+	}
+	
+	@RequestMapping(path="cart.s" ,params = "op=deleteCart")
+	public Result deleteCart(int pid,HttpSession session) {
+		// 获取当前的登录的用户
+				User user = (User) session.getAttribute("loginedUser");
+				
+				cdao.deleteCart(pid,user.getUid());
+				
+				return Result.success("删除商品成功!");
+				
 	}
 }

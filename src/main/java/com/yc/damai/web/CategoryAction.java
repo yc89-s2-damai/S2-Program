@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yc.damai.dao.CategoryDao;
 import com.yc.damai.dao.CategorySecondDao;
 import com.yc.damai.po.Category;
+import com.yc.damai.po.Result;
+import com.yc.damai.po.User;
 
 @RestController
 public class CategoryAction {
@@ -36,4 +39,5 @@ public class CategoryAction {
 		return cdao.queryCategory();
 		
 	}
+	
 }
