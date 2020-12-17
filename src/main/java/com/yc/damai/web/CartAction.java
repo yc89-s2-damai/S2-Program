@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yc.damai.biz.CartBiz;
 import com.yc.damai.dao.CartDao;
 import com.yc.damai.po.Cart;
 import com.yc.damai.po.Result;
@@ -18,6 +19,9 @@ public class CartAction {
 
 	@Resource
 	private CartDao cdao;	
+	
+	@Resource
+	private CartBiz cbiz;
 	/**
 	 * 添加购物车
 	 * @param pid 商品id
@@ -30,7 +34,7 @@ public class CartAction {
 		// 获取当前的登录的用户
 		User user = (User) session.getAttribute("loginedUser");
 		// 添加购物车记录, 注意:这里没有判断,是否有添加过商品,请自行移植
-		cdao.insert(user.getUid(),pid,count);
+		cbiz.addCart(count, user.getUid(), pid);
 		// 返回结果
 		return Result.success("添加购物车成功!");
 	}

@@ -46,7 +46,14 @@ public class CartDao extends BaseDao {
 	}
 
 	public void insert(int uid, int pid, int count) {
+		/*
+		 * if(jt.query("select *from cart where uid=? and pid=?", cartRowMapper)!=null)
+		 * { jt.update("insert into cart values(null,?,?,?)", uid, pid, count); }
+		 */
 		jt.update("insert into cart values(null,?,?,?)", uid, pid, count);
+	}
+	public int addCart(int count,int uid, int pid ) {
+		return jt.update("update cart set count=count+? where uid=? and pid=?",count, uid, pid);
 	}
 
 	public List<Map<String,Object>> selectCart(Integer uid) {
