@@ -2,9 +2,15 @@ package com.yc.damai.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.annotation.Resource;
+
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
 import com.yc.damai.po.Product;
@@ -65,8 +71,22 @@ public class ProductDao extends BaseDao{
 		p.getIsHot(),
 		p.getPid());
 	}
+	@Resource
+	private StringRedisTemplate srt;
 	
-	
+	@Scheduled(cron = "0 0 * * * *")
+	public void updateBcount() {
+		System.out.println("======定时更新浏览量======");
+		Set<String> ids=srt.keys("product_bcount_*");
+		List<Object[]> paramsList=new ArrayList<>();
+		for(String id : ids) {
+			String bcount =srt.opsForValue().get(id);
+			String pid =id.replace("product_bcount_", "");
+			paramsList.add(new Object[] {bcount,pid});
+		}
+		String sql="update product set bcount=? where pid=?";
+		jt.batchUpdate(sql,paramsList);
+	}
 	
 	private RowMapper<Product> productRowMapper = new RowMapper<Product>() {
 
@@ -85,8 +105,4 @@ public class ProductDao extends BaseDao{
 			return p;
 		}
 	};
-
-	
-
-	
 }

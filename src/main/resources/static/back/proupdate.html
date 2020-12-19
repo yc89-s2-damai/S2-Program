@@ -36,7 +36,7 @@
 					data-options="label:'描述:',multiline:true">
 			</div>
 			<div style="margin-bottom:20px">
-				<select class="easyui-combobox" name="isHot" label="热卖" style="width:100%"> 
+				<select class="easyui-combobox" name="isHot" label="热卖" style="width:100%" value="1"> 
 					<option value="1">热卖</option>
 					<option value="0">非热卖</option>
 					</select>
@@ -62,7 +62,7 @@
 					$("#image").textbox('setValue',res.data.image);
 					$("#pdesc").textbox('setValue',res.data.pdesc);
 					$("#shopPrice").textbox('setValue',res.data.shopPrice);
-					$("#isHot").textbox('setValue',res.data.isHot);
+					$("#isHot").combobox('loadData',res.data.isHot);
 					
 				})
 			}
