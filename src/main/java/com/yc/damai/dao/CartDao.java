@@ -77,4 +77,19 @@ public class CartDao extends BaseDao {
 		}
 	};
 
+
+	public Double selectTotalByUid(Integer uid) {
+		String sql="select sum(count * b.shop_price) from "+
+				   " cart a join product b on a.pid = b.pid "+
+				   " where uid=?";
+		
+		return jt.queryForObject(sql, Double.class,uid);
+	}
+
+	public void deleteByUid(Integer uid) {
+		
+		jt.update("delete from cart where uid=?",uid);
+		
+	}
+
 }

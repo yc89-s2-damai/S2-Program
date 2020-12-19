@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>商品信息</title>
+	<link rel="stylesheet" type="text/css" href="../js/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../js/easyui/themes/icon.css">
+	<script type="text/javascript" src="../js/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+</head>
+<body>
+	<h2>商品信息</h2>
+	<div style="margin:20px 0;"></div>
+	<div  class="easyui-panel" title="商品信息" style="width:100%;max-width:400px;padding:30px 60px;">
+		<form id="ff" method="post" action="../updateProduct">
+		<div style="margin-bottom:20px">
+				<input v-model="pid" class="easyui-textbox" name="pid" style="width:100%" id="pid"
+					data-options="label:'编号:',required:true">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" name="pname" style="width:100%" id="pname"
+					data-options="label:'名称:',required:true">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" name="image" style="width:100%" id="image"
+					data-options="label:'图片:',required:true">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" name="shopPrice" style="width:100%" id="shopPrice"
+					data-options="label:'商城价:',required:true">
+			</div>
+			<div style="margin-bottom:20px">
+				<input class="easyui-textbox" name="pdesc" style="width:100%;height:60px" id="pdesc"
+					data-options="label:'描述:',multiline:true">
+			</div>
+			<div style="margin-bottom:20px">
+				<select class="easyui-combobox" name="isHot" label="热卖" style="width:100%"> 
+					<option value="1">热卖</option>
+					<option value="0">非热卖</option>
+					</select>
+			</div>
+		</form>
+		<div style="text-align:center;padding:5px 0">
+			<a href="javascript:void(0)" class="easyui-linkbutton" 
+					onclick="select()" style="width:80px">查询</a> 
+			<a href="javascript:void(0)" class="easyui-linkbutton" 
+					onclick="update()" style="width:80px">修改</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" 
+					onclick="delete()" style="width:80px">删除</a>
+		</div>
+		<script>
+			function select(){
+				var pid= $("#pid").val();
+				axios.get("../product.s?op=queryProductById&pid="+pid).then(res=>{					
+					// res 应该是 json 格式的字符串
+					//var result = JSON.parse(res);
+					console.log(res.data);
+					
+					$("#pname").textbox('setValue',res.data.pname);
+					$("#image").textbox('setValue',res.data.image);
+					$("#pdesc").textbox('setValue',res.data.pdesc);
+					$("#shopPrice").textbox('setValue',res.data.shopPrice);
+					$("#isHot").textbox('setValue',res.data.isHot);
+					
+				})
+			}
+			function update(){
+				$('#ff').form('submit',{
+					success(res){
+						// res 应该是 json 格式的字符串
+						var result = JSON.parse(res);
+						alert(result.msg)
+					}
+				});
+			}
+			
+			
+	</script>
+	</div>
+	
+</body>
+</html>

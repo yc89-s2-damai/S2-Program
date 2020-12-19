@@ -7,14 +7,21 @@ import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yc.damai.biz.BizException;
+import com.yc.damai.biz.ProductBiz;
 import com.yc.damai.dao.ProductDao;
 import com.yc.damai.po.Product;
+import com.yc.damai.po.Result;
 
 @RestController
 public class ProductAction {
 	
 	@Resource
 	private ProductDao pdao;
+	
+	@Resource
+	private ProductBiz pbiz;
+	
 	
 	@RequestMapping(path="product.s",params = "op=queryHot")
 	public List<Product> queryHot(){
@@ -39,4 +46,29 @@ public class ProductAction {
 	public Product queryProductById(int pid){
 		return pdao.queryProductById(pid);
 	}
+	
+	@RequestMapping("createProduct")
+	public Result create(Product p) {
+		try {
+			pbiz.create(p);
+			return Result.success("商品添加成功!");
+		} catch (BizException e) {
+			e.printStackTrace();
+			return Result.failure(e.getMessage());
+		}
+	}
+	
+	@RequestMapping("updateProduct")
+	public Result update(Product p) {
+		try {
+			pbiz.update(p);
+			return Result.success("商品修改成功!");
+		} catch (BizException e) {
+			e.printStackTrace();
+			return Result.failure(e.getMessage());
+		}
+	}
+	
+	
+	
 }
