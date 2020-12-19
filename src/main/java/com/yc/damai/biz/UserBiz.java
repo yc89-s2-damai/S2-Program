@@ -19,8 +19,8 @@ public class UserBiz {
 	@Resource
 	private MailBiz mbiz;
 	
-	public String sendVcode(String name) {
-		User user = udao.selectByName(name);
+	public String sendVcode(String username) {
+		User user = udao.selectByName(username);
 		// 生成随机验证码
 		String vcode = "" + System.currentTimeMillis();
 		vcode = vcode.substring(vcode.length()-4);
@@ -69,6 +69,20 @@ public class UserBiz {
 			throw new BizException("验证码错误");
 		}
 		return user;
+	}
+	
+	public String resetPwd(String username,String vcode,
+			String pwd, String sessionVcode) throws BizException {
+		Utils.checkNull(username, "请输入用户名");
+		Utils.checkNull(pwd, "请输入密码");
+		System.out.println(vcode);
+		System.out.println(sessionVcode+"------");
+		if(vcode.equalsIgnoreCase(sessionVcode)) {
+			udao.updatePwdByName(pwd, username);
+			return "密码重置成功";
+		}else {
+			return "验证码错误！";
+		}	
 	}
 	
 }

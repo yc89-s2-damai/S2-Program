@@ -60,5 +60,21 @@ public class UserAction {
 			return new Result(0, e.getMessage());
 		} 
 	}
+	@RequestMapping("sendVcode")
+	public String sendVcode(String username,HttpSession session) {
+		//根据用户名发送验证码
+		String vcode =ubiz.sendVcode(username);
+		//将验证码保存到回话中
+		session.setAttribute("vcode", vcode);
+		return "验证码发送成功!";
+	}
+	
+	@RequestMapping("resetPwd")
+	public String resetPwd(String username,String vcode,String pwd,HttpSession session) throws BizException {
+		return ubiz.resetPwd(username, vcode, pwd, (String)session.getAttribute("vcode"));
+		
+		
+	}
+	
 	
 }

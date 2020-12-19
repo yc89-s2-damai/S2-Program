@@ -48,6 +48,12 @@ public class UserDao extends BaseDao{
 		ubiz.register(user);
 	}
 	
+	
+	public void updatePwdByName(String pwd,String username) {
+		String sql="update user set password=? where username=?";
+		jt.update(sql,pwd,username);
+	}
+	
 	private RowMapper<User> UserRowMapper = new RowMapper<User>() {
 
 		@Override
@@ -66,6 +72,6 @@ public class UserDao extends BaseDao{
 			return user;
 		}
 	};
-
+	
 
 }

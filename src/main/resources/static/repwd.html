@@ -6,13 +6,7 @@
 <link href="css/common.css" rel="stylesheet" type="text/css" />
 <link href="css/login.css" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script
-	src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
-<script type="text/javascript">
-	function checkImg(){
-		// 更新验证码
-	}
-</script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
 </head>
 <body>
 
@@ -89,15 +83,15 @@
 	<div class="container login">
 		<div class="span12">
 			<div class="ad">
-				<img src="image/login.jpg" width="500" height="330" alt="会员登录"
-					title="会员登录">
+				<img src="image/login.jpg" width="500" height="330" alt="找回密码"
+					title="找回密码">
 			</div>
 		</div>
-		<div class="span12 last">
+		<div id="E01" class="span12 last">
 			<div class="wrap">
 				<div class="main">
 					<div class="title">
-						<strong>会员登录</strong>USER LOGIN
+						<strong>找回密码</strong>FIND PWD
 					</div>
 					<div class="title"></div>
 					<form id="loginForm" action="login.html" method="post"
@@ -107,38 +101,29 @@
 								<tr>
 									<th>用户名:</th>
 									<td><input type="text" id="username" name="username"
-										v-model="username" class="text" maxlength="20" /><span></span></td>
-								</tr>
-								<tr>
-									<th>密&nbsp;&nbsp;码:</th>
-									<td><input type="password" id="password" name="password"
-										v-model="password" class="text" maxlength="20" autocomplete="off" /><span></span>
-									</td>
+										v-model="username" class="text" maxlength="20" /><span></span>
+										<input type="button" value="发送验证码" @click="send"></td>
+										
 								</tr>
 								<tr>
 									<th>验证码:</th>
-									<td>
-										<span class="fieldSet"> 
-										<input v-model="vcode"
-												id="vcode" name="captcha" class="text captcha"
-												maxlength="4" autocomplete="off">
-											<img id="captchaImage" class="captchaImage" 
-											:src="imgsrc" height="20px;"
-												title="点击更换验证码" @click="changeImg()">
-										</span>
+									<td><input type="text" id="vcode" 
+									name="vcode" v-model="vcode" class="text" maxlength="20" /><span></span></td>										
+								</tr>
+																																													
+								<tr>
+									<th>新密码:</th>
+									<td><input type="password" name="pwd" v-model="pwd" 
+									class="text" maxlength="20" autocomplete="off" /><span></span>
 									</td>
 								</tr>
 								<tr>
 									<th>&nbsp;</th>
-									<td><label> <input type="checkbox"
-											id="isRememberUsername" name="isRememberUsername"
-											value="true">记住用户名
-									</label> <label> &nbsp;&nbsp;<a href="repwd.html">找回密码</a>
-									</label></td>
+									<td></td>
 								</tr>
 								<tr>
 									<th>&nbsp;</th>
-									<td><input @click="login()" type="button" class="submit" value="登 录">
+									<td><input @click="yes" type="button" class="submit" value="确认修改">
 									</td>
 								</tr>
 								<tr class="register">
@@ -155,40 +140,41 @@
 							</tbody>
 						</table>
 					</form>
-					<script type="text/javascript">
-						new Vue({
-							el:"#loginForm",
-							data:{
-								username:"",
-								password:"",
-								vcode:"",
-								imgsrc:"verifyCode.s?a="
-							},
-							methods:{
-								changeImg(){
-									this.imgsrc += new Date();
-								},
-								login(){
-									var params = new URLSearchParams();
-									params.append("username",this.username);
-									params.append("password",this.password);
-									params.append("vcode",this.vcode);
-									axios.post("login.s",params).then(res=>{
-										alert(res.data.msg);
-										if(res.data.code == 1){
-											location.href="index.html";
-										}
-									}).catch(error=>{
-										alert("系统错误，请联系管理员");
-									})
-								}
-							}
-						})
-					
-					</script>
 				</div>
 			</div>
 		</div>
+		
+			<script type="text/javascript">
+	new Vue({
+		el:"#E01",
+		data:{
+			username:"",
+			vcode:"",
+			pwd:""
+		},
+		methods:{
+			send(){
+				var params =new URLSearchParams();
+				params.append("username",this.username);
+				axios.post("sendVcode",params).then(res=>{
+					alert("发送成功")
+				})
+			},
+			yes(){
+				var params =new URLSearchParams();
+    			params.append("username",this.username);
+    			params.append("pwd",this.pwd);
+    			params.append("vcode",this.vcode);
+    			axios.post("resetPwd",params).then(res=>{
+    				alert(res.data);	
+    			})
+			}
+		}
+	})
+
+</script>
+		
+		
 	</div>
 	<div class="container footer">
 		<div class="span24">
